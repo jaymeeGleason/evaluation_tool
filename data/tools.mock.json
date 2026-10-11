@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Ticket Brief",
+    "ownerTeam": "Support Operations",
+    "description": "Reads a district support ticket and writes a short summary of the problem, the ask, and any student-data details the agent should not miss.",
+    "status": "active",
+    "cost": "Included with the support desk. No extra license."
+  },
+  {
+    "name": "Huddle Notes",
+    "ownerTeam": "Staff Operations",
+    "description": "Turns a recording of an internal staff meeting into notes, decisions, and owners.",
+    "status": "active",
+    "cost": "$12 per host each month"
+  },
+  {
+    "name": "Family Language Desk",
+    "ownerTeam": "Family Communications",
+    "description": "Translates parent letters, attendance notices, and portal messages between English and the languages a district requests.",
+    "status": "active",
+    "cost": "$0.02 per hundred words"
+  },
+  {
+    "name": "Reply Macro Shelf",
+    "ownerTeam": "Support Operations",
+    "description": "Shared library of approved reply macros for common district questions about enrollment, records, and family notices.",
+    "status": "active",
+    "cost": "No license. Support leads edit the shelf."
+  },
+  {
+    "name": "Roster Dedupe",
+    "ownerTeam": "Student Data",
+    "description": "Script that finds duplicate student rows in a roster spreadsheet and writes a cleaned copy beside the original.",
+    "status": "active",
+    "cost": "Runs on an analyst laptop. No license fee."
+  },
+  {
+    "name": "Consent Ledger",
+    "ownerTeam": "Student Data",
+    "description": "Tracks which families have returned a data-sharing consent form and which forms are still outstanding.",
+    "status": "active",
+    "cost": "$8 per school each year"
+  },
+  {
+    "name": "Ticket Stamp",
+    "ownerTeam": "Support Operations",
+    "description": "Retired tool that stamped each support ticket with a category. Replaced by the current desk workflow. Do not route new tickets here.",
+    "status": "deprecated",
+    "cost": "License ended. Do not renew."
+  },
+  {
+    "name": "Letter Merge Classic",
+    "ownerTeam": "Family Communications",
+    "description": "Old mail-merge that filled parent letters from a spreadsheet. Kept for reference only. Do not use it for new sends.",
+    "status": "deprecated",
+    "cost": "Unused legacy seat at $200 a year"
+  },
+  {
+    "name": "Break Room Snack Count",
+    "ownerTeam": "Workplace",
+    "description": "Counts snacks in the office kitchen and flags when someone should reorder.",
+    "status": "active",
+    "cost": "A shared spreadsheet. No software cost."
+  },
+  {
+    "name": "Lobby Plant Chart",
+    "ownerTeam": "Workplace",
+    "description": "Watering schedule and pot list for the plants in the lobby.",
+    "status": "active",
+    "cost": "A paper chart. No software cost."
+  }
+]

@@ -1,0 +1,25 @@
+---
+description: Architecture rules for the AI-Fit Evaluator CLI
+globs: src/**/*.js
+alwaysApply: true
+---
+
+# Architecture
+
+Each module does one job and knows nothing about the others. Only `src/pipeline.js` wires them together.
+
+- `src/llm.js`: `askJson({ system, user })` calls the model, requires JSON, parses it, retries once on invalid JSON. No knowledge of tools, search, or prompts.
+- `src/prompts/*.js`: one file per step that builds prompt text. No API calls.
+- `src/sheet.js`: `loadTools()` returns the internal tools array. Reads `data/tools.mock.json` for now. The real Google Sheets API must be a drop-in replacement for this file's internals only. No relevance logic.
+- `src/search.js`: `search(query)` returns `{ title, url, snippet }[]` from Tavily. No summarizing or judging.
+- `src/steps/*.js`: one pipeline step each (`clarify`, `summarize`, `internalMatch`, `externalSearch`, `verdict`). Plain input in, plain object out. Must not print or read user input.
+- `src/pipeline.js`: runs steps in order and holds state. Takes an `ask(question)` callback so it never touches the terminal. No prompt text here.
+- `src/index.js`: CLI only. Reads and writes the terminal and supplies the `ask` callback. No business logic.
+
+No frameworks, no database, no TypeScript, no agent libraries.
+
+Every LLM step returns JSON with a defined shape. The model must never invent tools — external options need a URL from actual search results; internal matches must reference a tool in the list.
+
+Config comes from `.env` (`ANTHROPIC_API_KEY`, `TAVILY_API_KEY`). Fail clearly if either is missing. Model: `claude-sonnet-4-6`.
+
+Do not add dependencies beyond `@anthropic-ai/sdk`, `@tavily/core`, and `dotenv`.
