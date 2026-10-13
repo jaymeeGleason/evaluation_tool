@@ -1,0 +1,10 @@
+---
+description: Do not commit or push unless the user asks in the current message
+alwaysApply: true
+---
+
+# Git
+
+Do not commit, amend, or push unless the user explicitly asks for that action in the current message.
+
+A build plan, an earlier message, or a previous chunk does not carry permission forward. Leave changes in the working tree for the user to commit and push.
