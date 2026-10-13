@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
+    "eval": "node evals/run.js",
     "test": "node --disable-warning=ExperimentalWarning --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "jest": {

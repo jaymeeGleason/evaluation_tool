@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Support ticket briefs",
+    "expected": "use_internal_tool",
+    "problem": "The support team of 6 summarizes every new helpdesk ticket into a short brief with the issue, the requester, and a suggested next step. They do this every weekday. It takes about 10 hours a week. A person reviews each brief before anyone acts. Tickets sometimes include student names.",
+    "answers": [
+      "Support team of 6, every weekday, about 10 hours a week. Tickets go in. A short brief with issue, requester, and next step comes out. A person reviews it. Tickets can include student names."
+    ]
+  },
+  {
+    "name": "Weekly family newsletter",
+    "expected": "use_internal_tool",
+    "problem": "Every Friday the family communications team turns a bullet list of school announcements into the weekly family newsletter. It takes about 3 hours. A person proofreads it. The bullets are public events, not student records.",
+    "answers": [
+      "Family communications, every Friday, about 3 hours. Bullets in, a newsletter out. A person proofreads. No student records."
+    ]
+  },
+  {
+    "name": "Arabic family letters",
+    "expected": "adopt_external_tool",
+    "problem": "Family communications must translate about 40 report-card comments from English into Arabic each term. The translation help we already have only covers Spanish. A counselor reviews every comment before it is sent. Comments include the student's first name. This happens four times a year and takes about 6 hours each term.",
+    "answers": [
+      "Family communications, four times a year, about 6 hours each term. English comments in, Arabic comments out. A counselor reviews them. Comments include a student's first name. Existing help only does Spanish."
+    ]
+  },
+  {
+    "name": "Board meeting captions",
+    "expected": "adopt_external_tool",
+    "problem": "After each public school board meeting, the communications team needs closed captions on the recorded video before it is posted. There are two meetings a month. Captioning by hand takes about 5 hours a meeting. The meetings are public and do not include private student records. A person spot-checks the captions.",
+    "answers": [
+      "Communications team, two public meetings a month, about 5 hours each. A video in, captioned video out. A person spot-checks. No private student records. This is captions, not meeting notes."
+    ]
+  },
+  {
+    "name": "District bus voicemails",
+    "expected": "build_custom",
+    "problem": "Every school day the family communications team listens to parent voicemails about our district's own bus rules, sorts them into categories only our district uses, and drafts a reply in our district's voice. A person sends the reply. This takes about 8 hours a week. The audio includes student names and parent phone numbers and cannot be sent to an outside vendor.",
+    "answers": [
+      "Family communications, every school day, about 8 hours a week. Voicemails in, a categorized draft reply out. A person sends it. Audio includes student names and parent phone numbers and cannot leave the district. Categories are specific to our bus rules."
+    ]
+  },
+  {
+    "name": "Forgotten attendance",
+    "expected": "dont_use_ai",
+    "problem": "Teachers forget to submit Friday attendance in a form that already works. The office manager spends about an hour each week calling them. People have suggested an AI that emails reminders. The form is fine. The gap is that teachers do not fill it in.",
+    "answers": [
+      "Office manager, every Friday, about 1 hour. The form already exists and works. Teachers forget to submit it. No new output is needed."
+    ]
+  },
+  {
+    "name": "Suspension decisions",
+    "expected": "dont_use_ai",
+    "problem": "The principal wants a system to decide which students should be suspended, using discipline records and grades. There are only a few cases a month. A wrong decision harms a student. The records are highly sensitive student data.",
+    "answers": [
+      "The principal, a few cases a month. Discipline records and grades in, a suspension decision out. A wrong decision harms a student. The data is highly sensitive."
+    ]
+  },
+  {
+    "name": "Copy five numbers",
+    "expected": "dont_use_ai",
+    "problem": "Once a month a secretary copies five enrollment totals from a state PDF into a board slide. It takes about 20 minutes. The numbers must be exact. Someone suggested an AI assistant to read the PDF and type them in.",
+    "answers": [
+      "A secretary, once a month, about 20 minutes. Five numbers from a PDF into a slide. The numbers must be exact. This is copying, not a judgment."
+    ]
+  }
+]
