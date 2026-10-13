@@ -9,6 +9,6 @@ npm install
 npm start
 ```
 
-`npm start` prints a hello message. The evaluation pipeline is not built yet.
+`npm start` asks you to describe a workflow bottleneck, then prints a verdict.
 
 Internal tools load from the [Google Sheet](https://docs.google.com/spreadsheets/d/1M9a_kIKegQyVCBN8-XTKMvg2cgloNl_Ue31rsDNUOtc/edit). General access has to be "Anyone with the link" as Viewer, or the CLI cannot read it.
