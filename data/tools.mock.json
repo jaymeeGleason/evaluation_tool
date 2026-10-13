@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Ticket Digest",
+    "ownerTeam": "Support Ops",
+    "description": "Summarizes incoming support tickets into a short brief: issue, requester, and suggested next step.",
+    "status": "active",
+    "cost": "Included"
+  },
+  {
+    "name": "Meeting Scribe",
+    "ownerTeam": "Workplace",
+    "description": "Turns meeting transcripts into notes with decisions, owners, and open questions.",
+    "status": "active",
+    "cost": "$12/user/month"
+  },
+  {
+    "name": "Campus Translate",
+    "ownerTeam": "Family Communications",
+    "description": "Translates family-facing emails and letters between English and Spanish, with a human review step.",
+    "status": "active",
+    "cost": "$200/month"
+  },
+  {
+    "name": "Macro Shelf",
+    "ownerTeam": "IT",
+    "description": "Shared library of recorded macros for repetitive clicks in the student information system and the helpdesk console.",
+    "status": "active",
+    "cost": "Free"
+  },
+  {
+    "name": "Sheet Dedupe",
+    "ownerTeam": "Data Ops",
+    "description": "Script that finds and removes duplicate rows in spreadsheets, matching on email or student ID.",
+    "status": "active",
+    "cost": "Free"
+  },
+  {
+    "name": "Newsletter Draft",
+    "ownerTeam": "Family Communications",
+    "description": "Drafts the weekly family newsletter from a bullet list of announcements.",
+    "status": "active",
+    "cost": "Included"
+  },
+  {
+    "name": "Helpbot Classic",
+    "ownerTeam": "Support Ops",
+    "description": "Old chatbot that answered staff IT questions from a static FAQ. Replaced by Ticket Digest.",
+    "status": "deprecated",
+    "cost": "Retired"
+  },
+  {
+    "name": "Roster Matcher",
+    "ownerTeam": "Enrollment",
+    "description": "Matched student names across enrollment spreadsheets. Shut down after accuracy problems with similar names.",
+    "status": "deprecated",
+    "cost": "Retired"
+  },
+  {
+    "name": "Lunch Menu Board",
+    "ownerTeam": "Nutrition Services",
+    "description": "Publishes the weekly cafeteria menu to the staff intranet. Does not read or write other documents.",
+    "status": "active",
+    "cost": "Free"
+  },
+  {
+    "name": "Parking Permit Desk",
+    "ownerTeam": "Facilities",
+    "description": "Tracks staff parking permits and lot assignments. No document, ticket, or communication features.",
+    "status": "active",
+    "cost": "$30/month"
+  }
+]
