@@ -40,4 +40,8 @@ function textFrom(message) {
 }
 
 export function jsonText(raw) {
+  // Whole reply is ``` or ```json ... ```. Group 1 is the text inside the fence.
+  const fenced = raw.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+  return fenced ? fenced[1].trim() : raw;
+}
 
