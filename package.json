@@ -7,11 +7,19 @@
     "node": ">=20"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
     "@tavily/core": "^0.5.12",
     "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
   }
 }

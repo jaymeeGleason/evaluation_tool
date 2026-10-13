@@ -5,7 +5,7 @@ alwaysApply: true
 
 # AI-Fit Evaluator
 
-Node 20+, ES modules. No frameworks, no database, no TypeScript, no agent libraries. Dependencies are only `@anthropic-ai/sdk`, `@tavily/core`, and `dotenv`.
+Node 20+, ES modules. No frameworks, no database, no TypeScript, no agent libraries. Dependencies are only `@anthropic-ai/sdk`, `@tavily/core`, and `dotenv`. Tests use Jest.
 
 Each module does one job and knows nothing about the others. Only `pipeline.js` wires them together.
 

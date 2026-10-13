@@ -39,7 +39,5 @@ function textFrom(message) {
     .trim();
 }
 
-function jsonText(raw) {
-  const fenced = raw.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
-  return fenced ? fenced[1].trim() : raw;
-}
+export function jsonText(raw) {
+
