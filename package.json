@@ -1,0 +1,17 @@
+{
+  "name": "ai-fit-evaluator",
+  "version": "0.1.0",
+  "description": "CLI that decides whether AI is the right fix for a workflow bottleneck.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0",
+    "@tavily/core": "^0.5.12",
+    "dotenv": "^17.2.3"
+  }
+}
