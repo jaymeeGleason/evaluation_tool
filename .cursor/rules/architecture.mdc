@@ -11,7 +11,7 @@ Each module does one job and knows nothing about the others. Only `pipeline.js` 
 
 - `src/llm.js`: `askJson({ system, user })` calls the model, requires JSON, parses it, retries once on invalid JSON. No knowledge of tools, search, or prompts.
 - `src/prompts/*.js`: one file per step that builds prompt text. No API calls.
-- `src/sheet.js`: `loadTools()` returns the internal tools array. No relevance logic. A later Google Sheets version replaces only this file's internals.
+- `src/sheet.js`: `loadTools()` reads the internal tools Google Sheet and returns the array. No relevance logic. A different sheet source replaces only this file's internals.
 - `src/search.js`: `search(query)` returns `{ title, url, snippet }[]`. No summarizing or judging.
 - `src/steps/*.js`: one pipeline step each. Plain input in, plain object out. Do not print or read user input.
 - `src/pipeline.js`: runs steps in order and holds state. Takes an `ask(question)` callback. No prompt text.
