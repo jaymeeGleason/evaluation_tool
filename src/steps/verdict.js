@@ -25,14 +25,23 @@ export function toVerdictResult(value, input) {
     throw new Error(`Verdict step returned an unknown confidence "${value.confidence}".`);
   }
 
+  const reasons = stringList(value.reasons, "reasons").slice(0, 3);
+  const nextSteps = stringList(value.nextSteps, "nextSteps").slice(0, 3);
+
   return {
     verdict: value.verdict,
     confidence: value.confidence,
-    reasons: stringList(value.reasons, "reasons"),
-    nextSteps: stringList(value.nextSteps, "nextSteps"),
+    tldr: oneSentence(value.tldr) || reasons[0],
+    reasons,
+    nextSteps,
     internalMatches: input.matches ?? [],
     externalOptions: input.options ?? [],
   };
+}
+
+function oneSentence(value) {
+  if (typeof value !== "string") return "";
+  return value.trim();
 }
 
 function stringList(value, field) {

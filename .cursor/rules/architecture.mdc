@@ -12,10 +12,11 @@ Each module does one job and knows nothing about the others. Only `pipeline.js` 
 - `src/llm.js`: `askJson({ system, user })` calls the model, requires JSON, parses it, retries once on invalid JSON. No knowledge of tools, search, or prompts.
 - `src/prompts/*.js`: one file per step that builds prompt text. No API calls.
 - `src/sheet.js`: `loadTools()` reads the internal tools Google Sheet and returns the array. No relevance logic. A different sheet source replaces only this file's internals.
-- `src/search.js`: `search(query)` returns `{ title, url, snippet }[]`. No summarizing or judging.
+- `src/search.js`: `search(query)` returns `{ title, url, snippet }[]`, at most 2 calls per run. No summarizing or judging.
 - `src/steps/*.js`: one pipeline step each. Plain input in, plain object out. Do not print or read user input.
 - `src/pipeline.js`: runs steps in order and holds state. Takes an `ask(question)` callback. No prompt text.
 - `src/index.js`: CLI only. Reads and writes the terminal and supplies `ask`. No business logic.
+- `src/server.js`: demo page only. Serves the page and supplies `ask`. No business logic. No frameworks.
 
 Every LLM step returns JSON with a defined shape. The model must never invent tools: external options need a URL from actual search results, and internal matches must exist in the tools list.
 

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI-Fit Evaluator</title>
+    <style>
+      :root { color-scheme: light; }
+      body {
+        margin: 0;
+        font: 16px/1.5 ui-sans-serif, system-ui, sans-serif;
+        background: #f4f1ea;
+        color: #1d1c19;
+      }
+      main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+      h1 { font-size: 1.8rem; line-height: 1.2; margin: 0 0 0.4rem; }
+      .lead { margin: 0 0 1.5rem; color: #4e4a43; }
+      label { display: block; font-weight: 650; margin: 0 0 0.35rem; }
+      textarea, input, select {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        padding: 0.6rem 0.7rem;
+        border: 1px solid #c9c2b6;
+        border-radius: 8px;
+        background: #fff;
+      }
+      textarea { min-height: 8.5rem; resize: vertical; }
+      .examples { margin: 0 0 1rem; }
+      .actions { display: flex; gap: 0.6rem; align-items: center; margin-top: 0.8rem; }
+      button {
+        font: inherit;
+        background: #1d1c19;
+        color: #fff;
+        border: 0;
+        border-radius: 8px;
+        padding: 0.55rem 0.95rem;
+        cursor: pointer;
+      }
+      button:disabled { opacity: 0.55; cursor: default; }
+      .panel {
+        margin-top: 1.25rem;
+        padding: 1rem 1.1rem;
+        background: #fff;
+        border: 1px solid #e3ddd2;
+        border-radius: 10px;
+      }
+      .hidden { display: none; }
+      .status { color: #4e4a43; }
+      h2 { font-size: 1.35rem; margin: 0 0 0.35rem; }
+      .tool { font-size: 1.2rem; font-weight: 650; margin: 0 0 0.35rem; }
+      .tldr { margin: 0 0 0.35rem; }
+      .confidence { color: #4e4a43; margin: 0; font-size: 0.9rem; }
+      details { margin-top: 1rem; }
+      summary { cursor: pointer; }
+      h3 { font-size: 0.95rem; margin: 1rem 0 0.3rem; }
+      ul { margin: 0; padding-left: 1.15rem; }
+      a { color: inherit; }
+      .option { margin: 0 0 0.8rem; }
+      .error { color: #8a2b1d; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>AI-Fit Evaluator</h1>
+      <p class="lead">
+        Describe a workflow bottleneck. This says whether to use a tool you already have,
+        adopt one, build something, or skip AI.
+      </p>
+
+      <form id="problem-form">
+        <div class="examples">
+          <label for="example">Example</label>
+          <select id="example">
+            <option value="">Write your own</option>
+            <option value="tickets">Summarize support tickets</option>
+            <option value="attendance">Teachers forget a form</option>
+            <option value="captions">Caption board meetings</option>
+            <option value="voicemail">District bus voicemails</option>
+          </select>
+        </div>
+        <label for="problem">What is taking too long?</label>
+        <textarea id="problem" name="problem" required></textarea>
+        <div class="actions">
+          <button id="start" type="submit">Evaluate</button>
+        </div>
+      </form>
+
+      <p id="status" class="status hidden"></p>
+      <p id="error" class="error hidden"></p>
+
+      <form id="question-form" class="panel hidden">
+        <label id="question-label" for="answer"></label>
+        <input id="answer" name="answer" type="text" autocomplete="off" />
+        <div class="actions">
+          <button type="submit">Answer</button>
+        </div>
+      </form>
+
+      <section id="result" class="panel hidden"></section>
+    </main>
+    <script>
+      const examples = {
+        tickets: "The support team of 6 summarizes every new helpdesk ticket into a short brief with the issue, the requester, and a suggested next step. They do this every weekday. It takes about 10 hours a week. A person reviews each brief before anyone acts. Tickets sometimes include student names.",
+        attendance: "Teachers forget to submit Friday attendance in a form that already works. The office manager spends about an hour each week calling them. People have suggested an AI that emails reminders. The form is fine. The gap is that teachers do not fill it in.",
+        captions: "After each public school board meeting, the communications team needs closed captions on the recorded video before it is posted. There are two meetings a month. Captioning by hand takes about 5 hours a meeting. The meetings are public and do not include private student records. A person spot-checks the captions.",
+        voicemail: "Every school day the family communications team listens to parent voicemails about our district's own bus rules, sorts them into categories only our district uses, and drafts a reply in our district's voice. A person sends the reply. This takes about 8 hours a week. The audio includes student names and parent phone numbers and cannot be sent to an outside vendor.",
+      };
+
+      const labels = {
+        use_internal_tool: "Use an internal tool",
+        adopt_external_tool: "Adopt an external tool",
+        build_custom: "Build a custom tool",
+        dont_use_ai: "Don't use AI",
+      };
+
+      const problemForm = document.querySelector("#problem-form");
+      const problemInput = document.querySelector("#problem");
+      const exampleSelect = document.querySelector("#example");
+      const startButton = document.querySelector("#start");
+      const status = document.querySelector("#status");
+      const errorBox = document.querySelector("#error");
+      const questionForm = document.querySelector("#question-form");
+      const questionLabel = document.querySelector("#question-label");
+      const answerInput = document.querySelector("#answer");
+      const result = document.querySelector("#result");
+      let runId = null;
+
+      exampleSelect.addEventListener("change", () => {
+        problemInput.value = examples[exampleSelect.value] || "";
+      });
+
+      problemForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clear();
+        startButton.disabled = true;
+        showStatus("Starting.");
+        try {
+          const response = await fetch("/api/runs", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ problem: problemInput.value }),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Could not start.");
+          runId = data.id;
+          poll();
+        } catch (error) {
+          showError(error.message);
+          startButton.disabled = false;
+        }
+      });
+
+      questionForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const answer = answerInput.value.trim();
+        if (!answer || !runId) return;
+        questionForm.classList.add("hidden");
+        showStatus("Working. This takes a minute.");
+        const response = await fetch("/api/runs/" + runId + "/answer", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ answer }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          showError(data.error || "Could not send that answer.");
+          return;
+        }
+        answerInput.value = "";
+        poll();
+      });
+
+      async function poll() {
+        const response = await fetch("/api/runs/" + runId);
+        const data = await response.json();
+        if (!response.ok) {
+          showError(data.error || "That run stopped.");
+          startButton.disabled = false;
+          return;
+        }
+        if (data.status === "working") {
+          showStatus("Working. This takes a minute.");
+          setTimeout(poll, 1000);
+          return;
+        }
+        if (data.status === "question") {
+          status.classList.add("hidden");
+          questionLabel.textContent = data.question;
+          questionForm.classList.remove("hidden");
+          answerInput.focus();
+          return;
+        }
+        if (data.status === "done") {
+          status.classList.add("hidden");
+          showResult(data.result);
+          startButton.disabled = false;
+          return;
+        }
+        showError(data.error || "Something went wrong.");
+        startButton.disabled = false;
+      }
+
+      function showResult(value) {
+        result.classList.remove("hidden");
+        result.replaceChildren();
+
+        const title = document.createElement("h2");
+        title.textContent = labels[value.verdict] || value.verdict;
+        result.append(title);
+
+        const tool = bestTool(value);
+        if (tool) {
+          const name = document.createElement("p");
+          name.className = "tool";
+          name.textContent = tool;
+          result.append(name);
+        }
+
+        const tldr = document.createElement("p");
+        tldr.className = "tldr";
+        tldr.textContent = value.tldr || value.reasons?.[0] || "";
+        result.append(tldr);
+
+        const confidence = document.createElement("p");
+        confidence.className = "confidence";
+        confidence.textContent = titleCase(value.confidence) + " confidence";
+        result.append(confidence);
+
+        const more = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = "More detail";
+        more.append(summary);
+        addList(more, "Why", (value.reasons || []).slice(0, 3));
+        addList(more, "Next steps", (value.nextSteps || []).slice(0, 3));
+        addMatches(more, value.internalMatches);
+        addOptions(more, value.externalOptions);
+        result.append(more);
+      }
+
+      function bestTool(value) {
+        if (value.verdict === "use_internal_tool") {
+          const matches = value.internalMatches || [];
+          const strong = matches.find((match) => match.status === "active" && match.fit === "strong");
+          const active = matches.find((match) => match.status === "active");
+          return (strong || active || matches[0])?.name || "";
+        }
+        if (value.verdict === "adopt_external_tool") {
+          return value.externalOptions?.[0]?.name || "";
+        }
+        return "";
+      }
+
+      function titleCase(value) {
+        if (!value) return "";
+        return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+
+      function addList(parent, heading, items) {
+        const title = document.createElement("h3");
+        title.textContent = heading;
+        parent.append(title);
+        if (!items?.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "None.";
+          parent.append(empty);
+          return;
+        }
+        const list = document.createElement("ul");
+        for (const item of items) {
+          const li = document.createElement("li");
+          li.textContent = item;
+          list.append(li);
+        }
+        parent.append(list);
+      }
+
+      function addMatches(parent, matches) {
+        const title = document.createElement("h3");
+        title.textContent = "Internal matches";
+        parent.append(title);
+        if (!matches?.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "None.";
+          parent.append(empty);
+          return;
+        }
+        const list = document.createElement("ul");
+        for (const match of matches) {
+          const li = document.createElement("li");
+          li.textContent = match.name + " (" + match.status + ", " + match.fit + "): " + match.reason;
+          list.append(li);
+        }
+        parent.append(list);
+      }
+
+      function addOptions(parent, options) {
+        const title = document.createElement("h3");
+        title.textContent = "External options";
+        parent.append(title);
+        if (!options?.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "None.";
+          parent.append(empty);
+          return;
+        }
+        for (const option of options) {
+          const block = document.createElement("div");
+          block.className = "option";
+          const link = document.createElement("a");
+          link.href = option.url;
+          link.textContent = option.name;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+          const why = document.createElement("div");
+          why.textContent = option.why;
+          block.append(link, why);
+          parent.append(block);
+        }
+      }
+
+      function showStatus(message) {
+        errorBox.classList.add("hidden");
+        status.textContent = message;
+        status.classList.remove("hidden");
+      }
+
+      function showError(message) {
+        status.classList.add("hidden");
+        errorBox.textContent = message;
+        errorBox.classList.remove("hidden");
+      }
+
+      function clear() {
+        errorBox.classList.add("hidden");
+        questionForm.classList.add("hidden");
+        result.classList.add("hidden");
+        result.replaceChildren();
+      }
+    </script>
+  </body>
+</html>

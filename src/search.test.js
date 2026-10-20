@@ -1,4 +1,4 @@
-import { search, toSearchResults } from "./search.js";
+import { reserveSearchCall, resetSearchBudget, search, toSearchResults } from "./search.js";
 
 describe("toSearchResults", () => {
   test("maps Tavily results to title, url, and snippet", () => {
@@ -10,6 +10,16 @@ describe("toSearchResults", () => {
         ],
       }),
     ).toEqual([{ title: "Otter", url: "https://otter.ai/", snippet: "Meeting notes" }]);
+  });
+});
+
+describe("reserveSearchCall", () => {
+  test("allows two calls per run and stops on the third", () => {
+    resetSearchBudget();
+    reserveSearchCall();
+    reserveSearchCall();
+    expect(() => reserveSearchCall()).toThrow(/2 calls per run/);
+    resetSearchBudget();
   });
 });
 

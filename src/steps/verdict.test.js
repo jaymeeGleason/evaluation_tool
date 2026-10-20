@@ -29,6 +29,7 @@ describe("toVerdictResult", () => {
     );
 
     expect(result.verdict).toBe("use_internal_tool");
+    expect(result.tldr).toBe("Ticket Digest already covers this.");
     expect(result.internalMatches).toEqual(input.matches);
     expect(result.externalOptions).toEqual(input.options);
   });

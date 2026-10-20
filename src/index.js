@@ -12,8 +12,15 @@ const LABELS = {
 const rl = readline.createInterface({ input, output });
 
 try {
-  console.log("This takes a minute.\n");
-  const result = await run((question) => rl.question(`${question}\n> `));
+  let noted = false;
+  const result = await run(async (question) => {
+    const answer = await rl.question(`${question}\n> `);
+    if (!noted) {
+      noted = true;
+      console.log("\nThis takes a minute.");
+    }
+    return answer;
+  });
   console.log(`\n${formatVerdict(result)}`);
 } catch (error) {
   console.error(error.message);
@@ -23,34 +30,32 @@ try {
 }
 
 function formatVerdict(result) {
+  const tool = bestTool(result);
   const lines = [
-    `Verdict: ${result.verdict}`,
     LABELS[result.verdict] ?? result.verdict,
-    `Confidence: ${result.confidence}`,
+    ...(tool ? [tool] : []),
+    result.tldr || result.reasons[0],
+    `${result.confidence} confidence`,
     "",
     "Why:",
-    ...result.reasons.map((reason) => `- ${reason}`),
+    ...result.reasons.slice(0, 3).map((reason) => `- ${reason}`),
     "",
     "Next steps:",
-    ...result.nextSteps.map((step) => `- ${step}`),
-    "",
-    "Internal matches:",
-    ...formatMatches(result.internalMatches),
-    "",
-    "External options:",
-    ...formatOptions(result.externalOptions),
+    ...result.nextSteps.slice(0, 3).map((step) => `- ${step}`),
   ];
   return lines.join("\n");
 }
 
-function formatMatches(matches) {
-  if (!matches?.length) return ["None."];
-  return matches.map(
-    (match) => `- ${match.name} (${match.status}, ${match.fit}): ${match.reason}`,
-  );
-}
-
-function formatOptions(options) {
-  if (!options?.length) return ["None."];
-  return options.flatMap((option) => [`- ${option.name}`, `  ${option.url}`, `  ${option.why}`]);
+function bestTool(result) {
+  if (result.verdict === "use_internal_tool") {
+    const strong = result.internalMatches.find(
+      (match) => match.status === "active" && match.fit === "strong",
+    );
+    const active = result.internalMatches.find((match) => match.status === "active");
+    return (strong || active || result.internalMatches[0])?.name || "";
+  }
+  if (result.verdict === "adopt_external_tool") {
+    return result.externalOptions[0]?.name || "";
+  }
+  return "";
 }

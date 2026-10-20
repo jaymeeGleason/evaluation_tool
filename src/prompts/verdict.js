@@ -19,7 +19,9 @@ export function verdictPrompt({ problem, matches, options }) {
       "Sensitive student data can still be build_custom when a person reviews the result and the data stays inside the district.",
       "Use only these verdicts:",
       verdicts,
-      'Return {"verdict": string, "confidence": "high" | "medium" | "low", "reasons": string[], "nextSteps": string[]}.',
+      'Return {"verdict": string, "confidence": "high" | "medium" | "low", "tldr": string, "reasons": string[], "nextSteps": string[]}.',
+      "tldr is one sentence under 25 words. Name the tool when one should be used.",
+      "Give 2 short reasons and 3 short next steps.",
       "Do not add tools. The matches and options you were given are the only ones.",
     ].join("\n"),
     user: [
