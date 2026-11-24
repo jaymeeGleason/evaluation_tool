@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ticket-briefs",
+    "expected": "use_internal_tool",
+    "problem": "A support agent summarizes district support tickets every weekday. About 40 tickets a day, 8 minutes each. The input is the ticket text. The output is a 3-sentence brief a teammate reviews before anyone replies. A weak summary wastes a few minutes. Tickets can mention a student. The team already has an active tool that writes this brief.",
+    "answers": [
+      "A support agent does this every weekday, about 40 tickets, 8 minutes each. Ticket text comes in and a 3-sentence brief comes out. A teammate reviews it. A weak summary wastes a few minutes. Tickets can mention a student."
+    ]
+  },
+  {
+    "id": "family-translation",
+    "expected": "use_internal_tool",
+    "problem": "A family-communications specialist translates parent attendance notices and portal messages between English and Spanish. They do this every school day, about 30 messages, 10 minutes each. The input is the English notice. The output is the Spanish notice a teammate reviews before it is sent. A wrong word can confuse a family, so a person checks it. The messages are family communications and can mention a student. The team already has an active tool for this translation.",
+    "answers": [
+      "A family-communications specialist does this every school day, about 30 messages, 10 minutes each. English notice in, Spanish notice out. A teammate reviews it. A wrong word can confuse a family. The messages are family communications and can mention a student."
+    ]
+  },
+  {
+    "id": "huddle-notes",
+    "expected": "use_internal_tool",
+    "problem": "A staff-operations coordinator turns recordings of internal staff meetings into notes, decisions, and owners. They do this after every staff meeting, about 4 times a week, 45 minutes each. The input is the recording. The output is the notes a teammate reviews before they are shared. A missed owner wastes follow-up time. The meetings are internal staff meetings and do not include student records. The team already has an active tool that writes these notes.",
+    "answers": [
+      "A staff-operations coordinator does this about 4 times a week, 45 minutes each. A recording comes in and notes, decisions, and owners come out. A teammate reviews them. A missed owner wastes follow-up time. These are internal staff meetings with no student records."
+    ]
+  },
+  {
+    "id": "social-captions",
+    "expected": "adopt_external_tool",
+    "problem": "The public website editor turns already-published blog posts into two short social captions. They do this 20 times a week, 25 minutes each. The input is a published blog post. The output is two public captions a person reviews before posting. A wrong tone is easy to fix. The posts are public and contain no student or family information. No internal tool writes social captions.",
+    "answers": [
+      "The public website editor does this 20 times a week, 25 minutes each. A published blog post comes in and two public captions come out. A person reviews them. A wrong tone is easy to fix. There is no student or family information, and no internal tool does this."
+    ]
+  },
+  {
+    "id": "counseling-notes",
+    "expected": "build_custom",
+    "problem": "School counselors rewrite private counseling notes into a weekly summary that stays in the student file. About 30 students a week, 3 hours a day. The input is the private notes, including family situations. The output is a summary the counselor reviews before it is filed. A wrong fact would mislead the next counselor. The notes are student records and cannot be sent to an outside company. No internal tool writes these summaries.",
+    "answers": [
+      "School counselors do this every week for about 30 students, about 3 hours a day. Private notes come in and a summary for the student file comes out. The counselor reviews the draft. A wrong fact would mislead the next counselor. The notes are student records and cannot leave the district. No internal tool does this."
+    ]
+  },
+  {
+    "id": "retired-letter-merge",
+    "expected": "build_custom",
+    "problem": "Family liaisons write a new weekly paragraph to each family about that student's attendance pattern. This is new prose, not a mail merge of fixed blanks, and it is not translation. They do this every week for about 25 students, about 2 hours. The input is the week's attendance notes. The output is a paragraph a teammate reviews before it is filed. A wrong detail would confuse a family. The notes are student records and must stay inside the district. Letter Merge Classic used to be pointed at this job, but that tool is retired and must not be used. No active internal tool writes these paragraphs.",
+    "answers": [
+      "Family liaisons do this every week for about 25 students, about 2 hours. Attendance notes come in and a new paragraph comes out. A teammate reviews it. A wrong detail would confuse a family. The notes are student records and must stay inside the district. Letter Merge Classic is retired. No active internal tool writes these paragraphs."
+    ]
+  },
+  {
+    "id": "filename-script",
+    "expected": "dont_use_ai",
+    "problem": "An operations assistant runs a 12-line script that sorts downloaded signup files by date and moves them into the week's folder. They do this twice a week and it takes about 5 minutes. The input is a folder of files. The output is those same files in date order. The script is exact, and a guessed filename would be wrong. There is nothing to draft. No student records are read or written. This is a fixed process, not a writing task.",
+    "answers": [
+      "An operations assistant does this twice a week, about 5 minutes. A folder of files comes in and the same files come out sorted by date. The script is exact. There is nothing to draft. No student records are involved. This is a fixed process."
+    ]
+  },
+  {
+    "id": "lobby-plants",
+    "expected": "dont_use_ai",
+    "problem": "Once a year the office manager walks the lobby and waters the plants that look dry. It takes about 10 minutes. The input is a look at the soil. The output is watered plants. Too much water can wilt a plant. This is physical work, not a writing task, and it is not a paper chart. No student data is involved.",
+    "answers": [
+      "The office manager does this once a year, about 10 minutes. They look at the soil and water the dry plants. Too much water can wilt a plant. It is physical work. No student data is involved."
+    ]
+  }
+]
