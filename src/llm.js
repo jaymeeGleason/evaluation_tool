@@ -44,12 +44,18 @@ export async function askJson({ system, user }) {
   let lastResponse = "";
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system,
-      messages: [{ role: "user", content: user }],
-    });
+    let message;
+    try {
+      message = await client.messages.create({
+        model: MODEL,
+        max_tokens: MAX_TOKENS,
+        system,
+        messages: [{ role: "user", content: user }],
+      });
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : "The model request failed.";
+      throw new Error(detail.split(apiKey).join("[redacted]"));
+    }
     lastResponse = textFromMessage(message);
     const parsed = parseJsonObject(lastResponse);
     if (parsed) return parsed;
